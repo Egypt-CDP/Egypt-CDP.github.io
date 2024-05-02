@@ -7,14 +7,37 @@
 
 // Add data to map ///////
 var option = {
-    tooltip: {},
+    tooltip: {
+        // trigger: 'item',
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        textStyle: {
+            color: '#333'
+        },
+        position: 'top',
+        formatter: function (params) {
+            return (
+                '<b>X:</b> ' +
+                params.data[0].toFixed(2) +
+                '<br><b>Y:</b> ' +
+                params.data[1].toFixed(2) +
+                '<br><b>Zb:</b> ' +
+                params.data[2].toFixed(2)
+            );
+        }
+    },
+    toolbox: {
+        feature: {
+            restore: { show: true },
+            saveAsImage: { show: true }
+        },
+    },
 
     lmap: {
         // Initial options of Leaflet
         // See https://leafletjs.com/reference.html#map-option for details
         // NOTE: note that this order is reversed from Leaflet's [lat, lng]!
-        center: [25.56605299, 24.4527963], // [lng, lat]
-        zoom: 4,
+        center: [27, 18], // [lng, lat]
+        zoom: 5,
         // Whether the map and echarts automatically handles browser window resize to update itself.
         resizeEnable: true,
         // Whether echarts layer should be rendered when the map is moving. Default is true.
@@ -33,62 +56,90 @@ var option = {
     },
     visualMap: {
         show: true,
+        type: 'continuous',
         left: 50,
-        min: 20,
+        min: 15,
         max: 60,
+        inverse: false,
         seriesIndex: 0,
         calculable: true,
+        orient: 'horizontal',
+        right: 30,
+        top: 50,
+
+        align: 'bottom',
+        text: [null, 'CDP:   '],
+        textStyle: {
+            color: '#313695',
+            fontWeight: "bold"
+        },
+        formatter: '{value} km',
+        // label: {
+        //     show: true
+        // },
+        // emphasis: {
+        //     itemStyle: {
+        //         shadowBlur: 4,
+        //         shadowColor: 'rgba(0, 0, 0, 0.5)'
+        //     }
+        // },
         inRange: {
             color: [
-                '#313695',
-                '#4575b4',
-                '#74add1',
-                '#abd9e9',
-                '#e0f3f8',
-                '#ffffbf',
-                '#fee090',
-                '#fdae61',
-                '#f46d43',
+                '#a50026',
                 '#d73027',
-                '#a50026'
+                '#f46d43',
+                '#fdae61',
+                '#fee090',
+                '#ffffbf',
+                '#e0f3f8',
+                '#abd9e9',
+                '#74add1',
+                '#4575b4',
+                '#313695',
+                '#313695',
+
             ]
         },
-
     },
-    tooltip: {
-        trigger: 'item',
-        axisPointer: {
-            type: 'cross'
-        }
-    },
+    opacity: [1, 1],
     animation: false,
     emphasis: {
         itemStyle: {
             color: 'yellow'
-        }
+        },
+
     },
     series: [
         {
-            type: "heatmap",
+            type: 'scatter', // heatmap
+            symbol: 'rect',
+
             // use `lmap` as the coordinate system
             coordinateSystem: "lmap",
             data: data,
-            pointSize: 4,
-            blurSize: 0,
+            symbolSize: 12,
+            // blurSize: 5,
             emphasis: {
                 itemStyle: {
                     borderColor: '#333',
                     borderWidth: 1
                 }
             },
+
             animation: false
         },
     ],
 };
 
+
 // initialize echart
 var chart = echarts.init(document.getElementById("map"));
 chart.setOption(option);
+chart.on('click', { seriesIndex: 0 }, function (params) {
+    console.log(params.data)
+    alert('Zb = ' + params.data[2])
+    // alert('ff')
+})
 
 // get Leaflet extension component and Leaflet instance
 var lmapComponent = chart.getModel().getComponent("lmap");
@@ -156,6 +207,12 @@ option = {
     textStyle: {
         fontSize: 14
     },
+    toolbox: {
+        feature: {
+            restore: { show: true },
+            saveAsImage: { show: true }
+        },
+    },
     xAxis: {
         data: ['A', 'B', 'C', 'D', 'E'],
         boundaryGap: true,
@@ -204,6 +261,12 @@ option = {
     tooltip: {
         trigger: 'axis',
         formatter: 'Temperature : <br/>{b}km : {c}°C'
+    },
+    toolbox: {
+        feature: {
+            restore: { show: true },
+            saveAsImage: { show: true }
+        },
     },
     grid: {
         left: '3%',

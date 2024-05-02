@@ -1,9 +1,9 @@
-$(document).ready(function () {
-    $('#myModal').modal('show')
-    $('#mailbutton').click(function (event) {
-        window.location = "mailto:h.marzouk@uni-muenster.de";
-    });
-});
+// $(document).ready(function () {
+//     $('#myModal').modal('show')
+//     $('#mailbutton').click(function (event) {
+//         window.location = "mailto:h.marzouk@uni-muenster.de";
+//     });
+// });
 
 // Add data to map ///////
 var option = {
@@ -155,101 +155,126 @@ L.tileLayer(
 
 
 
-
-
-// Add data to leaft chart ///////
-
-const markLine = [];
-const positions = [
-    'start',
-    'middle',
-    'end',
-    'insideStart',
-    'insideStartTop',
-    'insideStartBottom',
-    'insideMiddle',
-    'insideMiddleTop',
-    'insideMiddleBottom',
-    'insideEnd',
-    'insideEndTop',
-    'insideEndBottom'
-];
-for (var i = 0; i < positions.length; ++i) {
-    markLine.push({
-        name: positions[i],
-        yAxis: 1.8 - 0.2 * Math.floor(i / 3),
-        label: {
-            formatter: '{b}',
-            position: positions[i]
-        }
-    });
-    if (positions[i] !== 'middle') {
-        const name =
-            positions[i] === 'insideMiddle' ? 'insideMiddle / middle' : positions[i];
-        markLine.push([
-            {
-                name: 'start: ' + positions[i],
-                coord: [0, 0.3],
-                label: {
-                    formatter: name,
-                    position: positions[i]
-                }
-            },
-            {
-                name: 'end: ' + positions[i],
-                coord: [3, 1]
-            }
-        ]);
-    }
-}
 option = {
-    animation: false,
-    textStyle: {
-        fontSize: 14
+    legend: {
+        data: ['580 °C', 'Solidus(3 C\km)']
     },
+
     toolbox: {
         feature: {
             restore: { show: true },
             saveAsImage: { show: true }
         },
     },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
     xAxis: {
-        data: ['A', 'B', 'C', 'D', 'E'],
-        boundaryGap: true,
-        splitArea: {
-            show: true
-        }
+        name: 'Temperature',
+        nameLocation: 'middle',
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} °C'
+        },
+
+        nameTextStyle: {
+            verticalAlign: 'top',
+            lineHeight: 27,
+            fontWeight: 'bold'
+        },
     },
     yAxis: {
-        max: 2
+        name: 'Depth (Km)',
+        min: 0,
+        max: 100,
+        interval: 2000,
+        nameTextStyle: {
+            fontWeight: 'bold'
+        },
+        type: 'category',
+        axisLine: { onZero: false },
+        axisLabel: {
+            formatter: '{value} km'
+        },
+        inverse: true,
+        boundaryGap: false,
+        data: Array.from({ length: 101 }, (v, k) => k + 1) - 1
     },
     series: [
         {
-            name: 'line',
+            name: '580 °C',
             type: 'line',
-            stack: 'all',
-            symbolSize: 6,
-            data: [0.3, 1.4, 1.2, 1, 0.6],
-            markLine: {
-                data: markLine,
-                label: {
-                    distance: [20, 8]
-                }
-            }
+            symbol: 'none',
+            smooth: true,
+            color: '#ee6666',
+            lineStyle: {
+                width: 2,
+                shadowColor: 'rgba(0,0,0,0.3)',
+                shadowBlur: 10,
+                shadowOffsetY: 8,
+                type: 'dashed',
+            },
+            // markLine: {
+            //     data: [
+
+            //         [
+            //             {
+            //                 name: '580 °C',
+            //                 coord: [580, 90]
+            //             },
+            //             {
+            //                 coord: [580, 0]
+            //             }
+            //         ],
+            //     ],
+            //     silent: true,
+            // },
+            data: Array.from({ length: 101 }, (v, k) => 580)
+
+        },
+        {
+            name: 'Solidus(3 C\km)',
+            type: 'line',
+            symbol: 'none',
+            smooth: true,
+            color: '#fac858',
+            lineStyle: {
+                width: 2,
+                shadowColor: 'rgba(0,0,0,0.3)',
+                shadowBlur: 10,
+                shadowOffsetY: 8,
+                type: 'dotted',
+            },
+            // markLine: {
+            //     data: [
+
+            //         [
+            //             {
+            //                 name: '580 °C',
+            //                 coord: [580, 90]
+            //             },
+            //             {
+            //                 coord: [580, 0]
+            //             }
+            //         ],
+            //     ],
+            //     silent: true,
+            // },
+            data: Array.from({ length: 101 }, (v, k) => 1100 + k * 1000 * 0.0035) // solidus at 3.5 c/km
+
         }
-    ],
-    grid: {
-        top: 30,
-        left: 60,
-        right: 60,
-        bottom: 40
-    }
+    ]
 };
 
 
 // initialize echart
 var chart1 = echarts.init(document.getElementById("chart1"));
 chart1.setOption(option);
+
+
 
 
 

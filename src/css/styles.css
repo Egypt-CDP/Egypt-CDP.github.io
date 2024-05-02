@@ -31,7 +31,7 @@ footer {
 }
 
 .lmap {
-  height: calc(100% - 540px);
+  height: calc(100% - 500px);
   width: 100%;
   background-color: #ccc;
   --bs-gutter-x: 0;

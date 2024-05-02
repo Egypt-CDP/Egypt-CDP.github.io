@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDP Egypt</title>
+
+    <link rel="stylesheet" href="./src/css/styles.css">
+
+    <!-- Import leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- ECharts CDN -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.js"></script>
+    <!-- echarts leaflet extension -->
+    <script type="text/javascript" src="./src/js/echarts-extension-leaflet.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            Header
+        </header>
+        <main class="main-content">
+            <div id="map" class="lmap">
+                Map Component
+            </div>
+            <div class="charts">
+                <div id="chart1" class="chart">
+                </div>
+                <div id="chart2" class="chart">
+                </div>
+            </div>
+        </main>
+        <footer>
+            Footer
+        </footer>
+    </div>
+
+    <!-- Main javascript function -->
+    <script type="text/javascript" src="./src/js/main.js"></script>
+
+</body>
+
+</html>

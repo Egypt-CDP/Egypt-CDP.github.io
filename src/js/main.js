@@ -1,3 +1,10 @@
+$(document).ready(function () {
+    $('#myModal').modal('show')
+    $('#mailbutton').click(function (event) {
+        window.location = "mailto:h.marzouk@uni-muenster.de";
+    });
+});
+
 
 var option = {
     tooltip: {},

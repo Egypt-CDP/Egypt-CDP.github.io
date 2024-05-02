@@ -6,12 +6,11 @@ html {
   font-family: Arial, sans-serif;
 }
 
-.container {
+.container-fluid {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: min-content 1fr min-content;
   height: 100%;
-  width: 100%;
 }
 
 header,
@@ -35,6 +34,7 @@ footer {
   height: calc(100% - 500px);
   width: 100%;
   background-color: #ccc;
+  --bs-gutter-x: 0;
 }
 
 .charts {

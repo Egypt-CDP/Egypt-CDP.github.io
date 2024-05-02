@@ -8,6 +8,17 @@
 
     <link rel="stylesheet" href="./src/css/styles.css">
 
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!-- Import leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -20,10 +31,11 @@
     <!-- echarts leaflet extension -->
     <script type="text/javascript" src="./src/js/echarts-extension-leaflet.js"></script>
 
+
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid  px-0">
         <header>
             Header
         </header>
@@ -36,6 +48,9 @@
                 </div>
                 <div id="chart2" class="chart">
                 </div>
+                <!-- Main javascript function -->
+                <script type="text/javascript" src="./src/js/main.js"></script>
+
             </div>
         </main>
         <footer>
@@ -43,8 +58,28 @@
         </footer>
     </div>
 
-    <!-- Main javascript function -->
-    <script type="text/javascript" src="./src/js/main.js"></script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Disclaimer</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This is a test project only.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="mailbutton">Contact us</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 

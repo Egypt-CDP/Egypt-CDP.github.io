@@ -31,7 +31,7 @@ footer {
 }
 
 .lmap {
-  height: calc(100% - 500px);
+  height: calc(100% - 300px);
   width: 100%;
   background-color: #ccc;
   --bs-gutter-x: 0;
@@ -42,7 +42,7 @@ footer {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   margin: 10px;
-  height: 480px;
+  height: 280px;
 }
 
 .chart {

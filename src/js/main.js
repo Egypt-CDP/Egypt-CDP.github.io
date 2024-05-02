@@ -1,9 +1,9 @@
-// $(document).ready(function () {
-//     $('#myModal').modal('show')
-//     $('#mailbutton').click(function (event) {
-//         window.location = "mailto:h.marzouk@uni-muenster.de";
-//     });
-// });
+$(document).ready(function () {
+    $('#myModal').modal('show')
+    $('#mailbutton').click(function (event) {
+        window.location = "mailto:h.marzouk@uni-muenster.de";
+    });
+});
 
 // Add data to map ///////
 var option = {
@@ -36,7 +36,7 @@ var option = {
         // Initial options of Leaflet
         // See https://leafletjs.com/reference.html#map-option for details
         // NOTE: note that this order is reversed from Leaflet's [lat, lng]!
-        center: [27, 18], // [lng, lat]
+        center: [30, 20], // [lng, lat]
         zoom: 5,
         // Whether the map and echarts automatically handles browser window resize to update itself.
         resizeEnable: true,
@@ -137,7 +137,7 @@ var chart = echarts.init(document.getElementById("map"));
 chart.setOption(option);
 chart.on('click', { seriesIndex: 0 }, function (params) {
     console.log(params.data)
-    alert('Zb = ' + params.data[2])
+    alert('Zb = ' + params.data[2].toFixed(2))
     // alert('ff')
 })
 

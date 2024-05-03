@@ -157,9 +157,51 @@ var layers = [];
 for (var providerId in providers) {
     layers.push(providers[providerId]);
 }
+L.geoJson(egyptBoundary, {
+    // Add invert: true to invert the geometries in the GeoJSON file
+    invert: true,
+    renderer: L.svg({ padding: 5 }),
+    color: 'gray', fillOpacity: 0.4, weight: 0
+}).addTo(lmap);
+
+L.control.scale(
+    {
+        imperial: false,
+    }).addTo(lmap);
 
 
 var ctrl = L.control.iconLayers(layers).addTo(lmap);
+
+lmap.addControl(new L.Control.LinearMeasurement({
+    unitSystem: 'metric',
+    color: '#FF0080',
+    type: 'line'
+}));
+
+
+L.Control.betterFileLayer({
+    fileSizeLimit: 60240, // File size limit in kb (10 MB)),
+    text: { // If you need translate
+        title: "Import a file (Max 60 MB)", // Plugin Button Text
+    },
+}).addTo(lmap);
+
+var notification = L.control
+    .notifications({
+        className: 'pastel',
+        timeout: 5000,
+        position: 'topleft',
+        closable: true,
+        dismissable: true,
+    })
+    .addTo(lmap);
+
+lmap.on("bfl:layerloaded", function () { notification.success('Success', 'Data loaded successfully'); })
+lmap.on("bfl:layerloaderror", function () { notification.alert('Error', 'Unable to load file'); })
+lmap.on("bfl:filenotsupported", function () { notification.alert('Error', 'File type not supported'); })
+lmap.on("bfl:layerisempty", function () { notification.warning('Error', 'No features in file'); })
+lmap.on("bfl:filesizelimit", function () { notification.alert('Error', 'Maximun file size allowed is 50 MB'); })
+
 
 
 option = {

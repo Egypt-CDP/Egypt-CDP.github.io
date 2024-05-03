@@ -66,7 +66,6 @@ var option = {
         orient: 'horizontal',
         right: 30,
         top: 50,
-
         align: 'bottom',
         text: [null, 'CDP:   '],
         textStyle: {
@@ -157,12 +156,12 @@ var layers = [];
 for (var providerId in providers) {
     layers.push(providers[providerId]);
 }
-L.geoJson(egyptBoundary, {
-    // Add invert: true to invert the geometries in the GeoJSON file
-    invert: true,
-    renderer: L.svg({ padding: 5 }),
-    color: 'gray', fillOpacity: 0.4, weight: 0
-}).addTo(lmap);
+// L.geoJson(egyptBoundary, {
+//     // Add invert: true to invert the geometries in the GeoJSON file
+//     invert: true,
+//     renderer: L.svg({ padding: 5 }),
+//     color: 'gray', fillOpacity: 0.4, weight: 0, setZIndex: 0
+// }).addTo(lmap);
 
 L.control.scale(
     {

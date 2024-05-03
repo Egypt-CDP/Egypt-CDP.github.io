@@ -1,9 +1,9 @@
-$(document).ready(function () {
-    $('#myModal').modal('show')
-    $('#mailbutton').click(function (event) {
-        window.location = "mailto:h.marzouk@uni-muenster.de";
-    });
-});
+// $(document).ready(function () {
+//     $('#myModal').modal('show')
+//     $('#mailbutton').click(function (event) {
+//         window.location = "mailto:h.marzouk@uni-muenster.de";
+//     });
+// });
 
 // Add data to map ///////
 var option = {
@@ -145,14 +145,21 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
 var lmapComponent = chart.getModel().getComponent("lmap");
 var lmap = lmapComponent.getLeaflet();
 
-L.tileLayer(
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-    {
-        attribution:
-            "Tiles &copy; Esri &mdash",
-    }
-).addTo(lmap);
+// L.tileLayer(
+//     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+//     {
+//         attribution:
+//             "Tiles &copy; Esri &mdash",
+//     }
+// ).addTo(lmap);
 
+var layers = [];
+for (var providerId in providers) {
+    layers.push(providers[providerId]);
+}
+
+
+var ctrl = L.control.iconLayers(layers).addTo(lmap);
 
 
 option = {

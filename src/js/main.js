@@ -1,9 +1,9 @@
-// $(document).ready(function () {
-//     $('#myModal').modal('show')
-//     $('#mailbutton').click(function (event) {
-//         window.location = "mailto:h.marzouk@uni-muenster.de";
-//     });
-// });
+$(document).ready(function () {
+    $('#myModal').modal('show')
+    $('#mailbutton').click(function (event) {
+        window.location = "mailto:h.marzouk@uni-muenster.de";
+    });
+});
 
 // Add data to map ///////
 var option = {
@@ -16,12 +16,12 @@ var option = {
         position: 'top',
         formatter: function (params) {
             return (
-                '<b>X:</b> ' +
-                params.data[0].toFixed(2) +
-                '<br><b>Y:</b> ' +
-                params.data[1].toFixed(2) +
-                '<br><b>Zb:</b> ' +
-                params.data[2].toFixed(2)
+                '<b>Long:</b> ' +
+                params.data[0].toFixed(2) + '°' +
+                '<br><b>Lat:</b> ' +
+                params.data[1].toFixed(2) + '°' +
+                '<br><b>Curie depth:</b> ' +
+                params.data[2].toFixed(2) + ' km'
             );
         }
     },
@@ -157,13 +157,17 @@ L.tileLayer(
 
 option = {
     legend: {
-        data: ['580 °C', 'Solidus(3 C\km)']
+        data: ['580 °C', 'Solidus (3 C\km)']
     },
 
     toolbox: {
         feature: {
             restore: { show: true },
-            saveAsImage: { show: true }
+            saveAsImage: {
+                show: true,
+                pixelRatio: 5,
+                name: 'Geotherm'
+            }
         },
     },
     grid: {
@@ -236,7 +240,7 @@ option = {
 
         },
         {
-            name: 'Solidus(3 C\km)',
+            name: 'Solidus (3 C\km)',
             type: 'line',
             symbol: 'none',
             smooth: true,
@@ -312,7 +316,7 @@ option = {
             formatter: '{value} km'
         },
         boundaryGap: false,
-        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80']
+        data: [0, 10, 20, 30, 40, 50, 60, 70, 80]
     },
     series: [
         {

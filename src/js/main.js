@@ -73,6 +73,7 @@ var option = {
             fontWeight: "bold"
         },
         formatter: '{value} km',
+        dimension: 2, // map the third column
         // label: {
         //     show: true
         // },
@@ -115,6 +116,9 @@ var option = {
 
             // use `lmap` as the coordinate system
             coordinateSystem: "lmap",
+            // data: data.map(function (val) {
+            //     return val.slice(0, -1);
+            // }),
             data: data,
             symbolSize: 12,
             // blurSize: 5,
@@ -134,11 +138,149 @@ var option = {
 // initialize echart
 var chart = echarts.init(document.getElementById("map"));
 chart.setOption(option);
+// calculate 1d model
+
 chart.on('click', { seriesIndex: 0 }, function (params) {
-    console.log(params.data)
-    alert('Zb = ' + params.data[2].toFixed(2))
+    // console.log(params.data)
+    // alert('Zb = ' + params.data[2].toFixed(2) + ' and HF = ' + params.data[3].toFixed(2))
     // alert('ff')
-})
+
+    // reinitialize
+    option1.series = option1.series.slice(0, 2)
+    option1.legend.data = option1.legend.data.slice(0, 2)
+    // option2.series = option2.series.slice(0)
+    // option2.legend.data = option2.legend.data.slice(0)
+    option2.series = []
+    option2.legend.data = []
+    chart1.setOption(option1, true);
+    chart2.setOption(option2, true);
+
+
+    var annualSurfaceTemperature = 0                        // T0
+    var MeanObservedHeatFlow = params.data[3] / 1000        // Q0
+    CPD = params.data[2] * 1000                         //cd (m)
+    // var CPD = 30 * 1000                      //cd (m)
+
+    var MaxCrustalconductivity = 3.5                        // ck1
+    var MinCrustalconductivity = 1.0                        // ck2
+    var IntervalCrustalconductivity = 0.5                   // dck
+    var DepthOfHeatProducingElements = 10 * 1000            // b (m)
+    var CurieTemp = 580                                  // Tc(°C) 
+    var DepthToCalculation = 100 * 1000                  //cz (m)
+
+    var z = Array.from({ length: DepthToCalculation / 1000 + 1 }, (v, k) => k * 1000)
+    var CurieTemp = CurieTemp - annualSurfaceTemperature;
+    var ick = (MaxCrustalconductivity - MinCrustalconductivity) / IntervalCrustalconductivity + 1
+    for (let i = 1; i <= ick; i++) {
+        // for (let i = 1; i <= 1; i++) {
+
+        var ck = MaxCrustalconductivity - (i - 1) * IntervalCrustalconductivity;
+
+        // console.log(i)
+        // console.log(ck)
+
+        const [T, q, A0] = CalculateTemp(MeanObservedHeatFlow, annualSurfaceTemperature, ck, CPD, DepthToCalculation, z, CurieTemp, DepthOfHeatProducingElements);
+
+
+        var qm = q[q.length - 2] * 1000
+
+        // console.log(T, q, A0)
+        // console.log(i, A0, qm)
+
+        if (A0 >= 0 && qm > 0 && qm < 100) {
+            console.log(i + ': ok')
+            // option1 = option1_base
+
+            option1.legend.data.push('Kcrust:' + ck)
+            option1.series.push({
+                name: 'Kcrust:' + ck,
+                type: 'line',
+                symbol: 'roundRect',
+                showSymbol: false,
+                animation: true,
+                universalTransition: {
+                    enabled: false
+                },
+                data: T,
+
+            })
+
+
+            var dz = z[1] - z[0]
+            var z1 = z.map(x => x + (dz / 2))
+            z1 = z1.map(x => x / 1000)
+            z1.splice(-1)
+
+            // console.log(q)
+
+            q.splice(-1)
+            // console.log(q)
+
+            var q1 = q.map(x => x * 1000)
+
+            // console.log(z1)
+
+
+            option2.yAxis.data = z1
+            option2.legend.data.push('Kcrust:' + ck)
+            option2.series.push({
+                name: 'Kcrust:' + ck,
+                type: 'line',
+                symbol: 'roundRect',
+                showSymbol: false,
+                animation: true,
+                universalTransition: {
+                    enabled: false
+                },
+                data: q1,
+
+            })
+
+        }
+    }
+    chart1.setOption(option1, true)
+    chart2.setOption(option2, true);
+
+},
+
+)
+
+function CalculateTemp(Q0, T0, ck, cd, cz, z, Tc, b) {
+    // console.log(Q0, T0, ck, cd, cz, z, Tc, b)
+    var dz = z[1] - z[0]	                //depth increment
+    var q = Array.from({ length: z.length }, (v, k) => k = 0)
+    var A0byck = ((Tc - (Q0 / ck * cd)) / (Math.pow(b, 2) - (b * cd) - (Math.pow(b, 2) * Math.exp(-cd / b))));
+    var A0 = A0byck * ck;
+
+    var T = z.map(x => Q0 * x / ck + (((A0 * Math.pow(b, 2)) - (x * A0 * b)) / ck) - (A0 * Math.pow(b, 2) * Math.exp(-x / b) / ck))
+
+    var T1 = circularShift(T, 1, true)
+
+    var q = T1.map(function (item, index) {   // T1-T
+        return item - T[index];
+    })
+
+    var q = q.map(x => x * (ck / dz))
+    q[0] = Q0
+
+    return [T, q, A0]
+
+    // console.log(q);
+    // console.log(T)
+    // console.log(T1)
+
+}
+
+function circularShift(arrayPar, steps, shiftLeft) {
+    var array = arrayPar.slice(0);
+    for (var i = 0; i < steps; i++) {
+        if (shiftLeft)
+            array.push(array.shift());
+        else
+            array.unshift(array.pop());
+    }
+    return array;
+}
 
 // get Leaflet extension component and Leaflet instance
 var lmapComponent = chart.getModel().getComponent("lmap");
@@ -203,11 +345,22 @@ lmap.on("bfl:filesizelimit", function () { notification.alert('Error', 'Maximun 
 
 
 
-option = {
+option1 = {
     legend: {
-        data: ['580 °C', 'Solidus (3 C\km)']
+        data: ['580 °C', 'Solidus (3°C/km)'],
     },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: "cross"
+        },
+        textStyle: {
+            fontSize: 12,
+        },
+        valueFormatter: (value) => + value.toFixed(2) + '°C',
 
+
+    },
     toolbox: {
         feature: {
             restore: { show: true },
@@ -224,6 +377,13 @@ option = {
         bottom: '3%',
         containLabel: true
     },
+    dataZoom: [
+        {
+            type: 'inside',
+            xAxisIndex: [0],
+            yAxisIndex: [0],
+
+        },],
     xAxis: {
         name: 'Temperature',
         nameLocation: 'middle',
@@ -261,7 +421,7 @@ option = {
             type: 'line',
             symbol: 'none',
             smooth: true,
-            color: '#ee6666',
+            color: '#EDC6C3',
             lineStyle: {
                 width: 2,
                 shadowColor: 'rgba(0,0,0,0.3)',
@@ -269,30 +429,19 @@ option = {
                 shadowOffsetY: 8,
                 type: 'dashed',
             },
-            // markLine: {
-            //     data: [
 
-            //         [
-            //             {
-            //                 name: '580 °C',
-            //                 coord: [580, 90]
-            //             },
-            //             {
-            //                 coord: [580, 0]
-            //             }
-            //         ],
-            //     ],
-            //     silent: true,
-            // },
+            animation: false,
             data: Array.from({ length: 101 }, (v, k) => 580)
 
         },
         {
-            name: 'Solidus (3 C\km)',
+            name: 'Solidus (3°C/km)',
             type: 'line',
             symbol: 'none',
             smooth: true,
-            color: '#fac858',
+            color: '#C0BBBA',
+            animation: false,
+
             lineStyle: {
                 width: 2,
                 shadowColor: 'rgba(0,0,0,0.3)',
@@ -300,22 +449,8 @@ option = {
                 shadowOffsetY: 8,
                 type: 'dotted',
             },
-            // markLine: {
-            //     data: [
-
-            //         [
-            //             {
-            //                 name: '580 °C',
-            //                 coord: [580, 90]
-            //             },
-            //             {
-            //                 coord: [580, 0]
-            //             }
-            //         ],
-            //     ],
-            //     silent: true,
-            // },
-            data: Array.from({ length: 101 }, (v, k) => 1100 + k * 1000 * 0.0035) // solidus at 3.5 c/km
+            data:
+                Array.from({ length: 101 }, (v, k) => 1100 + k * 1000 * 0.0035) // solidus at 3.5 c/km
 
         }
     ]
@@ -324,70 +459,93 @@ option = {
 
 // initialize echart
 var chart1 = echarts.init(document.getElementById("chart1"));
-chart1.setOption(option);
+chart1.setOption(option1);
 
 
 
 
 
-
-option = {
+option2 = {
     legend: {
-        data: ['Altitude (km) vs. temperature (°C)']
+        data: [],
     },
     tooltip: {
         trigger: 'axis',
-        formatter: 'Temperature : <br/>{b}km : {c}°C'
+        axisPointer: {
+            type: "cross"
+        },
+        textStyle: {
+            fontSize: 12,
+        },
+        valueFormatter: (value) => + value.toFixed(2) + ' mW/m2',
+
+
     },
     toolbox: {
         feature: {
             restore: { show: true },
-            saveAsImage: { show: true }
+            saveAsImage: {
+                show: true,
+                pixelRatio: 5,
+                name: 'Geotherm'
+            }
         },
     },
     grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        containLabel: true,
+        show: true,
     },
+    dataZoom: [
+        {
+            type: 'inside',
+            xAxisIndex: [0],
+            yAxisIndex: [0],
+
+        },],
     xAxis: {
+        name: 'Heat flow (mW/m2)',
+        nameLocation: 'middle',
         type: 'value',
-        axisLabel: {
-            formatter: '{value} °C'
-        }
+        min: -0.1,
+        max: 60,
+
+        nameTextStyle: {
+            verticalAlign: 'top',
+            lineHeight: 27,
+            fontWeight: 'bold'
+        },
     },
     yAxis: {
+        name: 'Depth (Km)',
+        min: -6,
+        max: 100.1,
+        nameTextStyle: {
+            fontWeight: 'bold'
+        },
         type: 'category',
-        axisLine: { onZero: false },
         axisLabel: {
             formatter: '{value} km'
         },
+        inverse: true,
         boundaryGap: false,
-        data: [0, 10, 20, 30, 40, 50, 60, 70, 80]
+        data: ['0', '100']
     },
     series: [
         {
-            name: 'Altitude (km) vs. temperature (°C)',
-            type: 'line',
-            symbolSize: 10,
-            symbol: 'circle',
-            smooth: true,
-            lineStyle: {
-                width: 3,
-                shadowColor: 'rgba(0,0,0,0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 8
-            },
-            data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5]
+            data: [0, 100],
+            // type: 'line',
+            show: false,
         }
     ]
-};
 
+};
 
 // initialize echart
 var chart2 = echarts.init(document.getElementById("chart2"));
-chart2.setOption(option);
+chart2.setOption(option2);
 
 window.addEventListener('resize', function () {
     chart2.resize();

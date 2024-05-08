@@ -1,9 +1,9 @@
-// $(document).ready(function () {
-//     $('#myModal').modal('show')
-//     $('#mailbutton').click(function (event) {
-//         window.location = "mailto:h.marzouk@uni-muenster.de";
-//     });
-// });
+$(document).ready(function () {
+    $('#myModal').modal('show')
+    $('#mailbutton').click(function (event) {
+        window.location = "mailto:h.marzouk@uni-muenster.de";
+    });
+});
 
 // Add data to map ///////
 var option = {
@@ -347,8 +347,13 @@ lmap.on("bfl:filesizelimit", function () { notification.alert('Error', 'Maximun 
 
 option1 = {
     legend: {
-        data: ['580 °C', 'Solidus (3°C/km)'],
+        data: ['T_Curie', 'Solidus (3°C/km)'],
     },
+    // title: {
+    //     text: '1-D Geotherm',
+    //     left: '1%'
+
+    // },
     tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -374,7 +379,7 @@ option1 = {
     grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: '4%',
         containLabel: true
     },
     dataZoom: [
@@ -403,6 +408,8 @@ option1 = {
         min: 0,
         max: 100,
         interval: 2000,
+        nameLocation: 'start',
+
         nameTextStyle: {
             fontWeight: 'bold'
         },
@@ -417,9 +424,10 @@ option1 = {
     },
     series: [
         {
-            name: '580 °C',
+            name: 'T_Curie',
             type: 'line',
-            symbol: 'none',
+            symbol: 'emptycircle',
+            showSymbol: false,
             smooth: true,
             color: '#EDC6C3',
             lineStyle: {
@@ -437,8 +445,8 @@ option1 = {
         {
             name: 'Solidus (3°C/km)',
             type: 'line',
-            symbol: 'none',
-            smooth: true,
+            symbol: 'emptycircle',
+            showSymbol: false,
             color: '#C0BBBA',
             animation: false,
 
@@ -494,7 +502,7 @@ option2 = {
     grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: '4%',
         containLabel: true,
         show: true,
     },
@@ -522,8 +530,10 @@ option2 = {
         name: 'Depth (Km)',
         min: -6,
         max: 100.1,
+        nameLocation: 'start',
         nameTextStyle: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            // lineHeight: 40,
         },
         type: 'category',
         axisLabel: {
@@ -548,7 +558,7 @@ var chart2 = echarts.init(document.getElementById("chart2"));
 chart2.setOption(option2);
 
 window.addEventListener('resize', function () {
-    chart2.resize();
     chart1.resize();
+    chart2.resize();
 
 });

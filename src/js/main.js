@@ -208,7 +208,7 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                         name: 'Curie depth',
                         yAxis: CPD / 1000,
                         label: {
-                            position: 'middle',
+                            position: 'insideEndTop',
                             formatter: '{b}: {c} km',
 
                         }
@@ -259,7 +259,7 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                         name: 'Curie depth',
                         yAxis: CPD / 1000,
                         label: {
-                            position: 'middle',
+                            position: 'insideEndTop',
                             formatter: '{b}: {c} km',
 
                         }
@@ -393,7 +393,7 @@ lmap.on("bfl:filesizelimit", function () { notification.alert('Error', 'Maximun 
 
 option1 = {
     legend: {
-        data: ['T_Curie', 'Solidus (3°C/km)'],
+        data: ['Solidus (3°C/km)'],
     },
     // title: {
     //     text: '1-D Geotherm',
@@ -472,20 +472,42 @@ option1 = {
         {
             name: 'T_Curie',
             type: 'line',
-            symbol: 'emptycircle',
-            showSymbol: false,
-            smooth: true,
-            color: '#EDC6C3',
-            lineStyle: {
-                width: 2,
-                shadowColor: 'rgba(0,0,0,0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 8,
-                type: 'dashed',
-            },
+            markLine: {
+                silent: true,
+                data: [{
+                    name: 'Curie Temp: ',
+                    xAxis: 580,
+                    label: {
+                        position: 'insideEndBottom',
+                        formatter: '{b}: {c} °C',
 
-            animation: false,
-            data: Array.from({ length: 101 }, (v, k) => 580)
+                    }
+                }],
+
+                lineStyle: {
+                    width: 2,
+                    color: '#EDC6C3',
+                    // shadowBlur: 10,
+                    // shadowOffsetY: 8,
+                    type: 'dashed',
+                },
+
+            }
+            // type: 'line',
+            // symbol: 'emptycircle',
+            // showSymbol: false,
+            // smooth: true,
+            // color: '#EDC6C3',
+            // lineStyle: {
+            //     width: 2,
+            //     shadowColor: 'rgba(0,0,0,0.3)',
+            //     shadowBlur: 10,
+            //     shadowOffsetY: 8,
+            //     type: 'dashed',
+            // },
+            // silent: true,
+            // animation: false,
+            // data: Array.from({ length: 101 }, (v, k) => 580)
 
         },
         {
@@ -495,6 +517,7 @@ option1 = {
             showSymbol: false,
             color: '#C0BBBA',
             animation: false,
+            silent: true,
 
             lineStyle: {
                 width: 2,

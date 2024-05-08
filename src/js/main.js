@@ -202,6 +202,26 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                     enabled: false
                 },
                 data: T,
+                markLine: {
+                    silent: true,
+                    data: [{
+                        name: 'Curie depth',
+                        yAxis: CPD / 1000,
+                        label: {
+                            position: 'middle',
+                            formatter: '{b}',
+
+                        }
+                    }],
+                    lineStyle: {
+                        width: 2,
+                        color: '#EDC6C3',
+                        // shadowBlur: 10,
+                        // shadowOffsetY: 8,
+                        type: 'dashed',
+                    },
+
+                }
 
             })
 
@@ -233,7 +253,26 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                     enabled: false
                 },
                 data: q1,
+                markLine: {
+                    silent: true,
+                    data: [{
+                        name: 'Curie depth',
+                        yAxis: CPD / 1000,
+                        label: {
+                            position: 'middle',
+                            formatter: '{b}',
 
+                        }
+                    }],
+                    lineStyle: {
+                        width: 2,
+                        color: '#EDC6C3',
+                        // shadowBlur: 10,
+                        // shadowOffsetY: 8,
+                        type: 'dashed',
+                    },
+
+                }
             })
 
         }

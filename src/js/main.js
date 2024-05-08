@@ -209,7 +209,7 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                         yAxis: CPD / 1000,
                         label: {
                             position: 'middle',
-                            formatter: '{b}',
+                            formatter: '{b}: {c} km',
 
                         }
                     }],
@@ -260,7 +260,7 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                         yAxis: CPD / 1000,
                         label: {
                             position: 'middle',
-                            formatter: '{b}',
+                            formatter: '{b}: {c} km',
 
                         }
                     }],

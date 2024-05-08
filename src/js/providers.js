@@ -6,16 +6,6 @@
     }
 })(function (L) {
     var providers = {};
-
-    providers['OpenStreetMap_Mapnik'] = {
-        title: 'osm',
-        icon: './src/assets/icons/openstreetmap_mapnik.png',
-        layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        })
-    };
-
     providers['OpenStreetMap_English'] = {
         title: 'osm EN',
         icon: './src/assets/icons/openstreetmap_mapnik.png',
@@ -25,6 +15,16 @@
             maxZoom: 20
         })
     };
+    providers['OpenStreetMap_Mapnik'] = {
+        title: 'osm',
+        icon: './src/assets/icons/openstreetmap_mapnik.png',
+        layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        })
+    };
+
+
 
     providers['OpenTopoMap'] = {
         title: 'topo',

@@ -238,8 +238,15 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
 
         }
     }
+
+    // Resize to make sure the container is ok! (may be useless :))
+    chart1.resize();
+    chart2.resize();
+
+    // start plotting
     chart1.setOption(option1, true)
     chart2.setOption(option2, true);
+
 
 },
 
@@ -362,7 +369,7 @@ option1 = {
         textStyle: {
             fontSize: 12,
         },
-        valueFormatter: (value) => + value.toFixed(2) + '°C',
+        valueFormatter: (value) => + value.toFixed(2) + ' °C',
 
 
     },

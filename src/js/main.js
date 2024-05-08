@@ -204,6 +204,8 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                 data: T,
                 markLine: {
                     silent: true,
+                    animation: false,
+
                     data: [{
                         name: 'Curie depth',
                         yAxis: CPD / 1000,
@@ -255,6 +257,7 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
                 data: q1,
                 markLine: {
                     silent: true,
+                    animation: false,
                     data: [{
                         name: 'Curie depth',
                         yAxis: CPD / 1000,
@@ -474,6 +477,7 @@ option1 = {
             type: 'line',
             markLine: {
                 silent: true,
+                animation: false,
                 data: [{
                     name: 'Curie Temp: ',
                     xAxis: 580,

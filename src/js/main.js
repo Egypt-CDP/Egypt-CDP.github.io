@@ -64,13 +64,15 @@ var option = {
         seriesIndex: 0,
         calculable: true,
         orient: 'horizontal',
-        right: 30,
-        top: 50,
+        right: 50,
+        // left:
+        top: '3%',
         align: 'bottom',
-        text: [null, 'CDP:   '],
+        text: [' Curie point depth', null],
         textStyle: {
             color: '#313695',
-            fontWeight: "bold"
+            fontWeight: "bold",
+            fontSize: 16
         },
         formatter: '{value} km',
         dimension: 2, // map the third column

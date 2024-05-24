@@ -193,8 +193,8 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
             console.log(i + ': ok')
             // option1 = option1_base
 
-            option1.legend.data.push('Kcrust:' + ck)
-            option1.series.push({
+            option1.legend.data.unshift('Kcrust:' + ck)
+            option1.series.unshift({
                 name: 'Kcrust:' + ck,
                 type: 'line',
                 symbol: 'roundRect',
@@ -246,8 +246,8 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
 
 
             option2.yAxis.data = z1
-            option2.legend.data.push('Kcrust:' + ck)
-            option2.series.push({
+            option2.legend.data.unshift('Kcrust:' + ck)
+            option2.series.unshift({
                 name: 'Kcrust:' + ck,
                 type: 'line',
                 symbol: 'roundRect',

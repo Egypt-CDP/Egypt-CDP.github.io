@@ -148,8 +148,8 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
     // alert('ff')
 
     // reinitialize
-    option1.series = option1.series.slice(0, 2)
-    option1.legend.data = option1.legend.data.slice(0, 2)
+    option1.series = option1.series.slice(-2)
+    option1.legend.data = option1.legend.data.slice(-2)
     // option2.series = option2.series.slice(0)
     // option2.legend.data = option2.legend.data.slice(0)
     option2.series = []
@@ -174,12 +174,8 @@ chart.on('click', { seriesIndex: 0 }, function (params) {
     var CurieTemp = CurieTemp - annualSurfaceTemperature;
     var ick = (MaxCrustalconductivity - MinCrustalconductivity) / IntervalCrustalconductivity + 1
     for (let i = 1; i <= ick; i++) {
-        // for (let i = 1; i <= 1; i++) {
 
         var ck = MaxCrustalconductivity - (i - 1) * IntervalCrustalconductivity;
-
-        // console.log(i)
-        // console.log(ck)
 
         const [T, q, A0] = CalculateTemp(MeanObservedHeatFlow, annualSurfaceTemperature, ck, CPD, DepthToCalculation, z, CurieTemp, DepthOfHeatProducingElements);
 
